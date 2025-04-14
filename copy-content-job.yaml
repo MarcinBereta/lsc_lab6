@@ -1,0 +1,82 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: lsc-job
+spec:
+  template:
+    spec:
+      containers:
+        - name: busybox
+          image: busybox
+          command: ["/bin/sh", "-c"]
+          args:
+            - >
+              echo '<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+              <!-- Background -->
+              <rect x="0" y="0" width="800" height="500" fill="#f8f9fa" rx="10" />
+              <!-- Title -->
+              <text x="400" y="40" font-family="Arial" font-size="24" font-weight="bold" text-anchor="middle" fill="#333">LSC Kubernetes Application Architecture</text>
+              <!-- AWS Cloud -->
+              <rect x="50" y="70" width="700" height="380" rx="15" fill="#F2F7FF" stroke="#232F3E" stroke-width="2" stroke-dasharray="5,5" />
+              <text x="110" y="100" font-family="Arial" font-size="18" font-weight="bold" fill="#232F3E">AWS Cloud</text>
+              <!-- EKS Cluster -->
+              <rect x="100" y="120" width="600" height="300" rx="10" fill="#E9F5FF" stroke="#2978A8" stroke-width="2" />
+              <text x="180" y="145" font-family="Arial" font-size="16" font-weight="bold" fill="#2978A8">EKS Cluster (lsc-lab-cluster)</text>
+              <!-- Node Group -->
+              <rect x="130" y="160" width="540" height="240" rx="10" fill="#FFFFFF" stroke="#999999" stroke-width="2" />
+              <text x="240" y="180" font-family="Arial" font-size="14" fill="#555">Node Group (t3.medium instances)</text>
+              <!-- NFS Server -->
+              <rect x="150" y="200" width="180" height="80" rx="5" fill="#FFF6E8" stroke="#D68910" stroke-width="2" />
+              <text x="240" y="230" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#333">NFS Server</text>
+              <text x="240" y="250" font-family="Arial" font-size="12" text-anchor="middle" fill="#666">Persistent Storage Provider</text>
+              <!-- Persistent Volume Claim -->
+              <rect x="150" y="300" width="180" height="80" rx="5" fill="#E8F8F5" stroke="#1ABC9C" stroke-width="2" />
+              <text x="240" y="330" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#333">lsc-pvc</text>
+              <text x="240" y="350" font-family="Arial" font-size="12" text-anchor="middle" fill="#666">Persistent Volume Claim</text>
+              <!-- Job -->
+              <rect x="470" y="200" width="180" height="80" rx="5" fill="#EBF5FB" stroke="#3498DB" stroke-width="2" />
+              <text x="560" y="230" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#333">lsc-job</text>
+              <text x="560" y="250" font-family="Arial" font-size="12" text-anchor="middle" fill="#666">Creates index.html content</text>
+              <!-- HTTP Server -->
+              <rect x="470" y="300" width="180" height="80" rx="5" fill="#F4ECF7" stroke="#8E44AD" stroke-width="2" />
+              <text x="560" y="330" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#333">lsc-http-server</text>
+              <text x="560" y="350" font-family="Arial" font-size="12" text-anchor="middle" fill="#666">Nginx Deployment</text>
+              <!-- Service -->
+              <rect x="400" y="420" width="180" height="60" rx="5" fill="#FDEDEC" stroke="#E74C3C" stroke-width="2" />
+              <text x="490" y="445" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#333">lsc-lab-service</text>
+              <text x="490" y="465" font-family="Arial" font-size="12" text-anchor="middle" fill="#666">LoadBalancer Service</text>
+              <!-- Connections -->
+              <line x1="240" y1="280" x2="240" y2="300" stroke="#666" stroke-width="2" stroke-dasharray="5,3" />
+              <polygon points="240,300 235,290 245,290" fill="#666" />
+              <line x1="470" y1="240" x2="330" y2="340" stroke="#666" stroke-width="2" />
+              <polygon points="330,340 335,330 345,338" fill="#666" />
+              <text x="380" y="270" font-family="Arial" font-size="12" fill="#666">writes to</text>
+              <line x1="330" y1="340" x2="470" y2="340" stroke="#666" stroke-width="2" />
+              <polygon points="470,340 460,335 460,345" fill="#666" />
+              <text x="400" y="330" font-family="Arial" font-size="12" fill="#666">mounts</text>
+              <line x1="560" y1="380" x2="490" y2="420" stroke="#666" stroke-width="2" />
+              <polygon points="490,420 488,410 498,412" fill="#666" />
+              <text x="540" y="410" font-family="Arial" font-size="12" fill="#666">exposes</text>
+              <path d="M 490,480 Q 490,510 600,510 Q 710,510 710,450" stroke="#E74C3C" stroke-width="3" fill="none" />
+              <text x="620" y="525" font-family="Arial" font-size="14" font-weight="bold" fill="#E74C3C">Internet Access</text>
+              <rect x="680" y="400" width="60" height="50" rx="5" fill="#FFFFFF" stroke="#333333" stroke-width="2" />
+              <rect x="685" y="410" width="50" height="30" rx="2" fill="#F2F3F4" stroke="#333333" stroke-width="1" />
+              <circle cx="710" cy="445" r="2" fill="#333333" />
+              <text x="710" y="390" font-family="Arial" font-size="12" text-anchor="middle" fill="#333">User Browser</text>
+              <rect x="50" y="460" width="15" height="15" fill="#FFF6E8" stroke="#D68910" stroke-width="2" />
+              <text x="72" y="473" font-family="Arial" font-size="12" fill="#333">Storage</text>
+              <rect x="130" y="460" width="15" height="15" fill="#EBF5FB" stroke="#3498DB" stroke-width="2" />
+              <text x="152" y="473" font-family="Arial" font-size="12" fill="#333">Jobs</text>
+              <rect x="200" y="460" width="15" height="15" fill="#F4ECF7" stroke="#8E44AD" stroke-width="2" />
+              <text x="222" y="473" font-family="Arial" font-size="12" fill="#333">Applications</text>
+              <rect x="300" y="460" width="15" height="15" fill="#FDEDEC" stroke="#E74C3C" stroke-width="2" />
+              <text x="322" y="473" font-family="Arial" font-size="12" fill="#333">Services</text>
+              </svg>' > /mnt/lsc/index.html && echo "Sample content copied to NFS-mounted PVC."
+          volumeMounts:
+            - name: lsc-content
+              mountPath: /mnt/lsc
+      restartPolicy: OnFailure
+      volumes:
+        - name: lsc-content
+          persistentVolumeClaim:
+            claimName: lsc-pvc
