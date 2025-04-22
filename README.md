@@ -1,6 +1,7 @@
 ## 📋 Kroki
 
 ### 🔹 Krok 1: Tworzenie klastra EKS
+Tworzymy nowy klaster EKS o nazwie `lsc-lab-cluster`, wskazując odpowiednią rolę IAM oraz konfigurację VPC (subnety i grupa zabezpieczeń).
 
 ```{bash}
 aws eks create-cluster --region us-east-1 --name lsc-lab-cluster \
@@ -22,7 +23,7 @@ aws eks wait cluster-active --region us-east-1 --name lsc-lab-cluster
 ```
 
 ### 🔹 Krok 2: Tworzenie grupy węzłów (Nodegroup)
-
+Dodajemy do klastra grupę węzłów roboczych z odpowiednią konfiguracją (rozmiar dysku, typ instancji, liczba replik, itd.).
 ```{bash}
 aws eks create-nodegroup --cluster-name lsc-lab-cluster --nodegroup-name lsc-ng \
   --node-role arn:aws:iam::353343645137:role/LabRole \
@@ -38,18 +39,20 @@ aws eks wait nodegroup-active --region us-east-1 --cluster-name lsc-lab-cluster 
 ```
 
 ### 🔹 Krok 3: Konfiguracja kubectl
-
+Konfigurujemy lokalne narzędzie kubectl, by mogło komunikować się z naszym klastrem EKS.
 ```{bash}
 aws eks --region us-east-1 update-kubeconfig --name lsc-lab-cluster
 
 ```
 ### 🔹 Krok 4: Test połączenia
+Sprawdzamy, czy połączenie z klastrem działa oraz czy węzły są dostępne.
 
 ```{bash}
 kubectl get nodes
 ```
 
 ###🔹  Krok 5: Instalacja NFS Provisionera
+Dodajemy repozytorium Helm i instalujemy provisioner NFS, który umożliwi dynamiczne przydzielanie zasobów persistent volume w Kubernetes.
 
 ```{bash}
 helm repo add nfs-ganesha-server-and-external-provisioner https://kubernetes-sigs.github.io/nfs-ganesha-server-and-external-provisioner/
@@ -58,6 +61,7 @@ helm install nfs-server-provisioner nfs-ganesha-server-and-external-provisioner/
 ```
 
 ###🔹  Krok 6: Tworzenie zasobów Kubernetes
+Wdrażamy aplikację HTTP oraz konfigurujemy zasoby takie jak Persistent Volume Claim i Job kopiujący dane.
 
 ```{bash}
 kubectl apply -f pvc.yaml
@@ -66,6 +70,7 @@ kubectl apply -f http-server-service.yaml
 kubectl apply -f copy-content-job.yaml
 ```
 ###🔹 Krok 7: Uzyskanie adresu HTTP serwera
+Pętla sprawdzająca, czy usługa LoadBalancer otrzymała zewnętrzny adres. Po przydzieleniu pobieramy hostname.
 
 ```{bash}
 :check_service
